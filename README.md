@@ -443,3 +443,4 @@ This project is provided as-is for educational and production use.
 ## Acknowledgments
 
 Based on the official [Element Server Suite Helm Charts](https://github.com/element-hq/ess-helm) adapted for Docker Compose deployment.
+# ess-helm-docker
