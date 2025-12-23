@@ -1,0 +1,89 @@
+# Element Server Suite Community - Docker Compose
+# Replicating https://github.com/element-hq/ess-helm for Docker
+#
+# Domains:
+# - matrix.deliev.net (Synapse homeserver)
+# - element.deliev.net (Element Web)
+# - call.deliev.net (Element Call)
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: element-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: synapse
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: synapse
+      POSTGRES_INITDB_ARGS: --encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - element-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synapse"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Synapse Homeserver
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: element-synapse
+    restart: unless-stopped
+    environment:
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+      SYNAPSE_SERVER_NAME: matrix.deliev.net
+      SYNAPSE_REPORT_STATS: "no"
+    volumes:
+      - ./data/synapse:/data
+    ports:
+      - "8008:8008"
+      - "8448:8448"
+    networks:
+      - element-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Element Web
+  element-web:
+    image: vectorim/element-web:latest
+    container_name: element-web
+    restart: unless-stopped
+    volumes:
+      - ./config/element-web/config.json:/app/config.json:ro
+    ports:
+      - "8090:80"
+    networks:
+      - element-net
+
+  # Synapse Admin - Web UI for user management
+  synapse-admin:
+    image: awesometechnologies/synapse-admin:latest
+    container_name: element-synapse-admin
+    restart: unless-stopped
+    ports:
+      - "8091:80"
+    networks:
+      - element-net
+
+  # Coturn TURN Server
+  coturn:
+    image: coturn/coturn:latest
+    container_name: element-coturn
+    restart: unless-stopped
+    ports:
+      - "3479:3479/tcp"
+      - "3479:3479/udp"
+      - "5349:5349/tcp"
+      - "49152-49252:49152-49252/udp"
+    volumes:
+      - ./config/coturn/turnserver.conf:/etc/coturn/turnserver.conf:ro
+    networks:
+      - element-net
+
+networks:
+  element-net:
+    driver: bridge

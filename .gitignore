@@ -1,0 +1,22 @@
+# Environment (contains passwords and secrets)
+.env
+
+# Data directories (contains databases and user content)
+data/
+
+# Logs
+*.log
+
+# Coturn configuration with secrets
+config/coturn/turnserver.conf
+
+# MacOS
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+
+# IDE
+.vscode/
+.idea/
