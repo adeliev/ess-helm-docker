@@ -74,6 +74,8 @@ services:
     image: coturn/coturn:latest
     container_name: element-coturn
     restart: unless-stopped
+    # Override default CMD to prevent auto-detection of external-ip (we set it in config)
+    command: ["-c", "/etc/coturn/turnserver.conf"]
     ports:
       - "3479:3479/tcp"
       - "3479:3479/udp"
