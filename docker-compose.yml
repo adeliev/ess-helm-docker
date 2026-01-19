@@ -2,9 +2,9 @@
 # Replicating https://github.com/element-hq/ess-helm for Docker
 #
 # Domains:
-# - matrix.deliev.net (Synapse homeserver)
-# - element.deliev.net (Element Web)
-# - call.deliev.net (Element Call)
+# - matrix.example.com (Synapse homeserver)
+# - element.example.com (Element Web)
+# - call.example.com (Element Call)
 
 services:
   # PostgreSQL Database
@@ -34,7 +34,7 @@ services:
     restart: unless-stopped
     environment:
       SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
-      SYNAPSE_SERVER_NAME: matrix.deliev.net
+      SYNAPSE_SERVER_NAME: matrix.example.com
       SYNAPSE_REPORT_STATS: "no"
     volumes:
       - ./data/synapse:/data

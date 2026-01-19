@@ -1,8 +1,8 @@
 {
     "default_server_config": {
         "m.homeserver": {
-            "base_url": "https://matrix.deliev.net",
-            "server_name": "matrix.deliev.net"
+            "base_url": "https://matrix.example.com",
+            "server_name": "matrix.example.com"
         }
     },
     "brand": "Element",
@@ -23,12 +23,12 @@
     "default_theme": "dark",
     "room_directory": {
         "servers": [
-            "matrix.deliev.net",
+            "matrix.example.com",
             "matrix.org"
         ]
     },
     "enable_presence_by_hs_url": {
-        "https://matrix.deliev.net": false,
+        "https://matrix.example.com": false,
         "https://matrix.org": false
     },
     "setting_defaults": {

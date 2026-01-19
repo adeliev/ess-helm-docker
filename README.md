@@ -158,7 +158,7 @@ sudo systemctl reload nginx
 ```
 
 **Important:** Update the following in nginx configs:
-- Replace `deliev.net` with your domain
+- Replace `example.com` with your domain
 - Update SSL certificate paths
 - Update `proxy_pass` IPs to your Docker host IP
 
